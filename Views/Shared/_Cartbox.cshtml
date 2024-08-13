@@ -1,0 +1,19 @@
+﻿@if (ViewBag.cartBox != null && ViewBag.cartBox.Count > 0)
+{
+    foreach (var item in ViewBag.cartBox)
+    {
+        <li>
+            <a class="aa-cartbox-img" href="#"><img src="@item.Products.ImageURL" alt="@item.Products.AltText"></a>
+            <div class="aa-cartbox-info">
+                <h4><a href="#">@item.Products.Name</a></h4>
+                <p>@item.Quantity x @item.TotalAmount</p>
+            </div>
+            <a class="aa-remove-product" href="@Url.Action("Remove", "MyCart", new { id = item.ProductID })"><span class="fa fa-times"></span></a>
+        </li>
+    }
+}
+
+<li>
+    <span class="aa-cartbox-total-title">Total</span>
+    <span class="aa-cartbox-total-price">@ViewBag.Total</span>
+</li>

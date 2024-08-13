@@ -1,0 +1,195 @@
+﻿@model Khareedo.Models.AdminUsers
+
+@{
+    ViewBag.Title = "Empleado";
+    ViewBag.SubTitle = "Editar";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+    var userRole = ViewBag.UserRole as int? ?? 0; 
+
+
+}
+
+@using (Html.BeginForm("Edit", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <div class="col-md-8">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.UserID)
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Primer Nombre</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Primer Nombre", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Apellido</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Apellido", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Edad</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Edad", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <!-- Salario -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.Salario, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Salario, new { htmlAttributes = new { @class = "form-control", placeholder = "Salario" } })
+                    @Html.ValidationMessageFor(model => model.Salario, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Género</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Gender, new List<SelectListItem>
+                                                            {
+                        new SelectListItem { Text = "Masculino", Value = "Masculino" },
+                        new SelectListItem { Text = "Femenino", Value = "Femenino" },
+                        new SelectListItem { Text = "Otro", Value = "Otro" }
+                    }, "-- Seleccione Género --", new { @class = "form-control form-input", required = "required" })
+                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Correo</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Correo", required = "required", type = "email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Dirección</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Dirección", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Teléfono
+                </label>
+                <div class="col-md-10">
+                    <input id="Phone" name="Phone" type="text" placeholder="Ingrese su Teléfono" class="form-control form-input"
+                           pattern="[0-9]{8}" title="El teléfono debe contener exactamente 8 números" required
+                           value="@Model.Phone">
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Teléfono Alternativo</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", pattern = "[0-9]{8}", title = "Ingrese un móvil válido de 8 dígitos." } })
+                    @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger", style = "display: none;" })
+
+                    <div class="tooltip">
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                        <span class="tooltiptext">Ingrese un móvil válido de 8 dígitos.</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Nombre de Usuario</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Nombre de Usuario", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Contraseña</label>
+                <div class="col-md-10">
+                    <input id="Password" name="Password" type="text" placeholder="Contraseña" class="form-control"
+                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}"
+                           title="La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra mayúscula, una letra minúscula, un número y un carácter especial."
+                           required
+                           value="@Model.Password">
+
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @if (userRole == 1)
+            {
+                <div class="form-group">
+                    @Html.Label("Rol", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.RoleType,
+                                              new SelectList(new List<Object>
+                                              {
+                                                  new { Value = 0, Text = "Empleado" },
+                                                  new { Value = 1, Text = "Administrador" }
+                                              }, "Value", "Text"),
+                                              "Seleccione un rol",
+                                              htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RoleType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2">Días de Vacaciones</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DiasVacaciones, new { htmlAttributes = new { @class = "form-control", placeholder = "Días de Vacaciones" } })
+                        @Html.ValidationMessageFor(model => model.DiasVacaciones, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+
+            <script>
+                // Función para validar la contraseña
+                function validarPassword() {
+                    var password = document.getElementById("Password").value;
+                    var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/;
+                    if (!regex.test(password)) {
+                        alert("La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.");
+                        return false;
+                    }
+                    return true;
+                }
+            </script>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Guardar" class="btn btn-primary" />
+                    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-danger" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+<script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+        var inputs = document.querySelectorAll('.form-input');
+
+        inputs.forEach(function (input) {
+            input.addEventListener('blur', function () {
+                if (!this.classList.contains('exempt-validation') && this.value.trim() === '' && !this.classList.contains('error')) {
+                    this.setCustomValidity('Por favor ingresar ' + this.getAttribute('placeholder').toLowerCase());
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+        });
+    });
+    </script>
+}
+

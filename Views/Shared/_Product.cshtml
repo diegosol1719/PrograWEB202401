@@ -1,0 +1,61 @@
+﻿
+
+<li>
+    <link rel="stylesheet" type="text/css" href="~/Content/product-styles.css" />
+
+    <figure class="aa-product-img">
+        <!-- Imagen del producto con formato -->
+        <a href="@Url.Action("ViewDetails", "Product", new { id = Model.ProductID })">
+            <img src="@Model.ImageURL" alt="@Model.AltText" />
+        </a>
+
+        <!-- Botón de añadir al carrito -->
+        @if (Model.UnitInStock > 0)
+        {
+            <a class="aa-add-card-btn" href="@(Session["username"] != null ? Url.Action("AddToCart", "Product", new { id = Model.ProductID }) : Url.Action("Login", "Account"))">
+                <span class="fa fa-shopping-cart"></span> Añadir al Carrito
+            </a>
+        }
+        else
+        {
+            <a class="aa-add-card-btn" style="pointer-events: none; cursor: default;">
+                <span class="fa fa-frown-o"></span> Agotado
+            </a>
+        }
+
+        <!-- Detalles del producto -->
+        <figcaption>
+            <h4 class="aa-product-title"><a href="#">@Model.Name</a></h4>
+            <span class="aa-product-price">₡/ @Model.UnitPrice</span>
+            <span class="aa-product-old-price">
+                <del>
+                    @if (Model.OldPrice != null)
+                    {
+                        <text>₡/ @Model.OldPrice</text>
+                    }
+                </del>
+            </span>
+        </figcaption>
+    </figure>
+
+    <!-- Contenido adicional (ícono de favoritos) -->
+    <div class="aa-product-hvr-content">
+        <a href="@(Session["username"]!=null ? Url.Action("WishList","Product", new {id=@Model.ProductID }) :Url.Action("Login","Account"))"
+           data-toggle="tooltip"
+           data-placement="top"
+           title="Add to Wishlist"
+           style="background-color: transparent; display: inline-block;">
+            <span class="fa fa-heart" style="color: #53c654; vertical-align: middle;"></span>
+        </a>
+    </div>
+
+    <!-- Etiqueta de oferta si es aplicable -->
+    @if (Model.AddBadge == true)
+    {
+        <span class="aa-badge  @Model.OfferBadgeClass" href="#">@Model.OfferTitle</span>
+    }
+
+    @{
+        TempData["returnURL"] = Request.RawUrl;
+    }
+</li>

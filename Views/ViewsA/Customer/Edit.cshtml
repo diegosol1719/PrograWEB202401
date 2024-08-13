@@ -1,0 +1,199 @@
+﻿@model Khareedo.Models.Customers
+
+@{
+    ViewBag.Title = "Editar Cliente";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "Customer", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.CustomerID)
+
+    <div class="col-md-8">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Primer Nombre</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.First_Name, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Primer Nombre", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.First_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Apellido</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Last_Name, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Apellido", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.Last_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Nombre de Usuario</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Nombre de Usuario", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Contraseña
+                </label>
+                <div class="col-md-10">
+                    <input id="Password" name="Password" type="text" placeholder="Contraseña" class="form-control form-input"
+                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}"
+                           title="La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra mayúscula, una letra minúscula, un número y un carácter especial."
+                           required
+                           value="@Model.Password">
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Edad
+                </label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Género</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Gender, new List<SelectListItem>
+                                                            {
+                        new SelectListItem { Text = "Masculino", Value = "Masculino" },
+                        new SelectListItem { Text = "Femenino", Value = "Femenino" },
+                        new SelectListItem { Text = "Otro", Value = "Otro" }
+                    }, "-- Seleccione Género --", new { @class = "form-control form-input", required = "required" })
+                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Provincia</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Country, new List<SelectListItem>
+                                                            {
+                        new SelectListItem { Value = "Heredia", Text = "Heredia" },
+                        new SelectListItem { Value = "San Jose", Text = "San Jose" },
+                        new SelectListItem { Value = "Cartago", Text = "Cartago" },
+                        new SelectListItem { Value = "Alajuela", Text = "Alajuela" },
+                        new SelectListItem { Value = "Limon", Text = "Limon" },
+                        new SelectListItem { Value = "Guanacaste", Text = "Guanacaste" },
+                        new SelectListItem { Value = "Puntarenas", Text = "Puntarenas" }
+                    }, "-- Seleccione Provincia --", new { @class = "form-control form-input", required = "required" })
+                    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    País
+                </label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Ciudad
+                </label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Codigo Postal
+                </label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PostalCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Correo</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Correo", required = "required", type = "email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Correo Alternativo
+                </label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.AltEmail, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.AltEmail, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Teléfono
+                </label>
+                <div class="col-md-10">
+                    <input id="Mobile1" name="Mobile1" type="text" placeholder="Ingrese su Teléfono" class="form-control form-input"
+                           pattern="[0-9]{8}" title="El teléfono debe contener exactamente 8 números" required
+                           value="@Model.Mobile1">
+                    @Html.ValidationMessageFor(model => model.Mobile1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Dirección</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Address1, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Dirección", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.Address1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Dirección Alternativa</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Dirección Alternativa" } })
+                    @Html.ValidationMessageFor(model => model.Address2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Notas</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control form-input", placeholder = "Notas" } })
+                    @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Guardar" class="btn btn-primary" />
+                    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var inputs = document.querySelectorAll('.form-input');
+
+        inputs.forEach(function (input) {
+            input.addEventListener('blur', function () {
+                if (!this.classList.contains('exempt-validation') && this.value.trim() === '' && !this.classList.contains('error')) {
+                    this.setCustomValidity('Por favor ingresar ' + this.getAttribute('placeholder').toLowerCase());
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+        });
+    });
+</script>

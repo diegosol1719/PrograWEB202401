@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Khareedo.Models.Order>
+
+@{
+    ViewBag.Title = "Orders";
+}
+<style>
+    .alert-info {
+        padding: 30px; /* Ajusta el padding para hacer la alerta más grande */
+        margin-bottom: 149px; /* Añade margen inferior para aumentar el espacio con el footer */
+    }
+
+    .search-container {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        margin-bottom: 10px;
+    }
+
+    .search-container .input-group {
+        width: 300px; /* Ancho fijo para el input-group */
+    }
+
+    .search-container .search-input {
+        flex: 1; /* El input toma el espacio disponible */
+    }
+
+    .search-container .search-button {
+        margin-left: -1px; /* Ajuste mínimo para evitar superposición */
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse; /* Colapsar bordes de la tabla */
+        table-layout: fixed; /* Fijar el ancho de la tabla */
+    }
+
+        .table th, .table td {
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #ddd; /* Borde delgada */
+        }
+
+        .table th {
+            background-color: #005900; /* Fondo gris oscuro para el encabezado */
+            color: #fff; /* Texto blanco */
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Fondo gris claro para filas pares */
+        }
+        .table tbody tr:hover {
+            background-color: #c8e6c9; /* Cambia el fondo a verde claro (#c8e6c9) al pasar el ratón */
+        }
+
+    .pagination-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h2 style="margin-top: 20px;">Pedidos</h2>
+            @if (!Model.Any())
+            {
+                <div class="alert alert-success" role="alert">
+                    No hay órdenes disponibles.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped mx-auto">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">ID de Orden</th>
+                                <th scope="col">ID de Cliente</th>
+                                <th scope="col">Fecha de Orden</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.OrderID)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.CustomerID)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                                    <td>₡@Html.DisplayFor(modelItem => item.TotalAmount)</td>
+                                    <td>
+                                        @Html.ActionLink("Ver detalles", "Details", new { id = item.OrderID }, new { @class = "btn btn-success" })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

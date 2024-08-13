@@ -1,0 +1,260 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<Khareedo.Models.Products>
+@{
+    ViewBag.Title = "Products";
+}
+@*<link href="~/Content/PagedList.css" rel="stylesheet" />*@
+
+<style>
+    .pagination > .active > a {
+        color: #fff;
+        background-color: #3fc35f;
+        border: 1px solid #3fc35f;
+    }
+
+    .aa-sidebar-price-range #minValue #maxValue {
+        border: 1px solid #e8e7e6;
+        display: inline-block;
+        font-size: 14px;
+        height: 30px;
+        margin-right: 10px;
+        margin-top: 20px;
+        padding: 4px 10px;
+    }
+</style>
+<!-- catg header banner section -->
+@if (!string.IsNullOrEmpty(Request.QueryString["categoryName"]))
+{
+
+    <style>
+        #aa-catg-head-banner {
+            position: relative;
+            text-align: center; /* Centra horizontalmente el contenido */
+            background-color: transparent; /* Color de fondo transparente */
+            padding: 0; /* Elimina cualquier padding */
+            margin: 0; /* Elimina cualquier margen */
+            height: 35vh; /* Asegura que el contenedor ocupe toda la altura de la pantalla */
+        }
+
+            #aa-catg-head-banner img {
+                width: 100%; /* Ancho del 30% */
+                height: 100%; /* Altura del 100% para cubrir todo el contenedor verticalmente */
+                display: block; /* Asegura que la imagen ocupe todo el ancho disponible */
+                margin: 0 auto; /* Centra la imagen horizontalmente */
+                border-radius: 8px; /* Esquinas redondeadas */
+                object-fit: cover; /* Ajusta la imagen para llenar el contenedor sin distorsión */
+            }
+    </style>
+
+    <section id="aa-catg-head-banner">
+        <img src="~/Content/img/local2.png" alt="Banner Image">
+        <div class="aa-catg-head-banner-area">
+            <div class="container">
+                <div class="aa-catg-head-banner-content">
+                    <h2>@(Request.QueryString["categoryName"])</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                        <li class="active">@Html.Raw(Request.QueryString["categoryName"])</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+}
+<!-- / catg header banner section -->
+<!-- product category -->
+<section id="aa-product-category">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-8 col-md-push-3">
+                <div class="aa-product-catg-content">
+
+                    @{
+                        var productName = ViewData["ProductName"] as string;
+                        var imageUrl = ViewData["ImageUrl"] as string;
+                    }
+
+                    <!-- Solo se aplica formato a la imagen -->
+                    <li style="list-style-type: none;">
+                        <div class="seq-model text-center" style="margin: 0; padding: 0;">
+                            <!-- Aplicando formato a la imagen -->
+                            <img src="@imageUrl" alt="@productName" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);" />
+                        </div>
+                    </li>
+
+
+                    <div class="aa-product-catg-body">
+                        <ul class="aa-product-catg">
+                            <!-- start single product item -->
+                            @if (Model != null && Model.Count > 0)
+                            {
+                                bool hasAvailableProducts = false;
+
+                                foreach (var item in Model)
+                                {
+                                    if (item.ProductAvailable == true)
+                                    {
+                                        hasAvailableProducts = true;
+                                        @Html.Partial("_Product", item)
+                                    }
+                                }
+
+                                // Mostrar mensaje si no hay productos disponibles
+                                if (!hasAvailableProducts)
+                                {
+                                    <h3>¡Lo sentimos! No hay ningún producto disponible</h3>
+                                }
+                            }
+                            else
+                            {
+                                <h3>¡Lo sentimos! No hay ningún producto disponible</h3>
+                            }
+                            <!-- end single product item -->
+                        </ul>
+                    </div>
+
+
+                    <div class="aa-product-catg-pagination">
+      
+                        @if (ViewBag.filterByPrice == true)
+                        {
+                            @Html.PagedListPager(Model, page => Url.Action("FilterByPrice", new { minPrice = Request.QueryString["minPrice"], maxPrice = Request.QueryString["maxPrice"], page })
+                                                                                                                             , new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded })
+                        }
+                        else
+                        {
+                            @Html.PagedListPager(Model, page => Url.Action("GetProductsByCategory", new { categoryName = Request.QueryString["categoryName"], page })
+                                                                                                                                 , new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded })
+                        }
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-md-pull-9">
+                <aside class="aa-sidebar">
+                    <!-- single sidebar -->
+
+                    <ul class="aa-sidebar-widget">
+                        <h3>Categorias</h3>
+                        <li><a href="@Url.Action("Index","Home")">Inicio</a></li>
+                        @{
+                            using (Khareedo.Models.Entities db = new Khareedo.Models.Entities())
+                            {
+                                List<Khareedo.Models.Categories> Categories = db.Categories.Where(c => c.isActive == true).ToList();
+                                int count = 0;
+
+                                foreach (var cat in Categories)
+                                {
+                                    if (count < 20)
+                                    {
+                                        <li>
+                                            <a href="@Url.Action("GetProductsByCategory", "Product", new { categoryName = cat.Name != null ? cat.Name.Trim() : string.Empty })">@cat.Name</a>
+                                        </li>
+                                        count++;
+                                    }
+                                }
+                            }
+                        }
+                    </ul>
+
+                    <!-- single sidebar -->
+                    <div class="aa-sidebar-widget">
+                        <h3>Comprar Por Precio</h3>
+                        <!-- price range -->
+                        <div class="aa-sidebar-price-range">
+
+                            @using (Html.BeginForm("FilterByPrice", "Product", FormMethod.Get))
+                            {
+
+                                <input type="range" min="0" max="100" onchange="updateMinInput(this.value);"> <br />
+                                <input type="range" min="0" max="100" onchange="updateMaxInput(this.value);">
+                                <br />
+                                <input type="number" name="minPrice" id="minValue" min="0" maxlength="6" max="999999" value="00" size="6">
+                                <input type="number" name="maxPrice" id="maxValue" min="0" maxlength="6" max="999999" value="00" size="6"> <br /><br />
+                                <button class="aa-filter-btn" type="submit">Filtrar</button>
+
+                            }
+                        </div>
+
+                    </div>
+                    <!-- single sidebar -->
+                    @*<div class="aa-sidebar-widget">
+                            <h3>Shop By Color</h3>
+                            <div class="aa-color-tag">
+                                <a class="aa-color-green" href="#"></a>
+                                <a class="aa-color-yellow" href="#"></a>
+                                <a class="aa-color-pink" href="#"></a>
+                                <a class="aa-color-purple" href="#"></a>
+                                <a class="aa-color-blue" href="#"></a>
+                                <a class="aa-color-orange" href="#"></a>
+                                <a class="aa-color-gray" href="#"></a>
+                                <a class="aa-color-black" href="#"></a>
+                                <a class="aa-color-white" href="#"></a>
+                                <a class="aa-color-cyan" href="#"></a>
+                                <a class="aa-color-olive" href="#"></a>
+                                <a class="aa-color-orchid" href="#"></a>
+                            </div>
+                        </div>*@
+                    <!-- single sidebar -->
+                    <div class="aa-sidebar-widget">
+                        <h3>Top de Ventas</h3>
+                        <div class="aa-recently-views">
+                            <ul>
+                                @foreach (Khareedo.Models.TopSoldProduct item in ViewBag.TopRatedProducts)
+                                {
+
+                                    <li>
+                                        <a href="@Url.Action("ViewDetails", "Product", new { id = item.product.ProductID })" class="aa-cartbox-img"><img alt="@item.product.AltText" src="@item.product.ImageURL"></a>
+                                        <div class="aa-cartbox-info">
+                                            <h4> <b><a href="@Url.Action("ViewDetails", "Product", new { id = item.product.ProductID })">@item.product.Name</a></b></h4>
+                                            <p>Ventas: @item.CountSold</p>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- single sidebar -->
+                    <div class="aa-sidebar-widget">
+                        <h3>Visto Recientemente</h3>
+                        <div class="aa-recently-views">
+                            <ul>
+                                @foreach (Khareedo.Models.Products item in ViewBag.RecentViewsProducts)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ViewDetails", "Product", new { id = item.ProductID })" class="aa-cartbox-img"><img alt="@item.AltText" src="@item.ImageURL"></a>
+                                        <div class="aa-cartbox-info">
+                                            <h4><b><a href="@Url.Action("ViewDetails", "Product", new { id = item.ProductID })">@item.Name</a></b></h4>
+                                            <p>₡/ @item.UnitPrice</p>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                </aside>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- / product category -->
+
+<script type="text/javascript">
+    function updateMinInput(val) {
+        document.getElementById('minValue').value = 00;
+        document.getElementById('minValue').value = val * 10;
+    }
+    function updateMaxInput(val) {
+        document.getElementById('maxValue').value = 00;
+        document.getElementById('maxValue').value = val * 100;
+    }
+</script>
+
+

@@ -1,0 +1,261 @@
+﻿@model Khareedo.Models.Products
+
+@{
+    ViewBag.Title = "Editar Producto";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+
+        @using (Html.BeginForm("Edit", "Productos", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ProductID)
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Producto</label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Nombre", required = "required" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Proveedor
+            </label>
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.SupplierID, (IEnumerable<SelectListItem>)ViewBag.Suppliers, "Seleccione un proveedor", new { @class = "form-control input-sm", required = "required" })
+                @Html.ValidationMessageFor(model => model.SupplierID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Categoría
+            </label>
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.CategoryID, (IEnumerable<SelectListItem>)ViewBag.Categories, "Seleccione una categoría", new { @class = "form-control input-sm", required = "required" })
+                @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Subcategoría
+            </label>
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.SubCategoryID, (IEnumerable<SelectListItem>)ViewBag.SubCategories, "Seleccione una subcategoría", new { @class = "form-control input-sm", required = "required" })
+                @Html.ValidationMessageFor(model => model.SubCategoryID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Precio con oferta
+            </label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.UnitPrice, "{0:0.##}", new { @class = "form-control input-sm", required = "required" })
+                @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Precio sin oferta
+            </label>
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.OldPrice, "{0:0.##}", new { @class = "form-control input-sm" })
+                @Html.ValidationMessageFor(model => model.OldPrice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Peso
+            </label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.UnitWeight, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.UnitWeight, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Descuento
+            </label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Unidades en stock
+            </label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.UnitInStock, new { htmlAttributes = new { @class = "form-control input-sm", required = "required" } })
+                @Html.ValidationMessageFor(model => model.UnitInStock, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Unidades en orden
+            </label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.UnitOnOrder, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.UnitOnOrder, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ImageURL, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                <input type="file" name="imageFile" id="imageFile" class="form-control" />
+                @Html.ValidationMessageFor(model => model.ImageURL, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Producto Disponible
+            </label>
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.ProductAvailable)
+                    @Html.ValidationMessageFor(model => model.ProductAvailable, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Texto alternativo
+            </label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.AltText, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.AltText, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Oferta Disponible
+            </label>
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.AddBadge)
+                    @Html.ValidationMessageFor(model => model.AddBadge, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Titulo de la Oferta
+            </label>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.OfferTitle, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.OfferTitle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Color
+            </label>
+            <div class="col-md-4">
+                @Html.DropDownListFor(
+                    model => model.OfferBadgeClass,
+                    new SelectList(
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "Verde", Value = "aa-sale" },
+                            new SelectListItem { Text = "Naranja", Value = "aa-hot" },
+                            new SelectListItem { Text = "Rojo", Value = "aa-sold-out" }
+                        },
+                        "Value",
+                        "Text",
+                        Model.OfferBadgeClass
+                    ),
+                    new { @class = "form-control input-sm" }
+                )
+                @Html.ValidationMessageFor(model => model.OfferBadgeClass, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Descripción corta
+            </label>
+            <div class="col-md-4">
+                @Html.TextAreaFor(model => model.ShortDescription, new { @class = "form-control input-sm" })
+                @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Descripción larga
+            </label>
+            <div class="col-md-4">
+                @Html.TextAreaFor(model => model.LongDescription, new { @class = "form-control input-sm" })
+                @Html.ValidationMessageFor(model => model.LongDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+        }
+
+     
+    </div>
+
+    <div class="col-md-4 text-center">
+        <div style="margin-top: 120px; text-align: right; margin-right: 100px;">
+            @if (!string.IsNullOrEmpty(Model.ImageURL))
+            {
+                <img src="@Model.ImageURL" alt="Imagen del producto" class="img-thumbnail" style="max-width: 300px; max-height: 300px; display: inline-block;" />
+            }
+            else
+            {
+                <img src="~/Content/Images/ProfileImage.svg" alt="Imagen predeterminada" class="img-thumbnail" style="max-width: 300px; max-height: 300px; display: inline-block;" />
+            }
+        </div><br />
+    </div>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var inputs = document.querySelectorAll('.form-input');
+
+            inputs.forEach(function (input) {
+                input.addEventListener('blur', function () {
+                    if (!this.classList.contains('exempt-validation') && this.value.trim() === '' && !this.classList.contains('error')) {
+                        this.setCustomValidity('Por favor ingresar ' + this.getAttribute('placeholder').toLowerCase());
+                    } else {
+                        this.setCustomValidity('');
+                    }
+                });
+            });
+        });
+    </script>
+    

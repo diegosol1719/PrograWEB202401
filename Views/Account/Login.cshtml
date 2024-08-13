@@ -1,0 +1,177 @@
+﻿@model Khareedo.Models.Customers
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<!-- Cart view section -->
+<section id="aa-myaccount">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-myaccount-area">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="aa-myaccount-login">
+                                <h4>Iniciar Sesión</h4>
+
+                                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "aa-login-form" }))
+                                {
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                    <label for="UserName">Usuario<span>*</span></label>
+                                    <input name="UserName" id="UserName" type="text" required placeholder="Usuario" value="@Request.Form["UserName"]">
+
+                                    <label for="Password">Contraseña<span>*</span></label>
+                                    <div class="password-container">
+                                        <input name="Password" id="Password" type="password" required placeholder="Contraseña">
+                                        <span class="password-toggle-icon" onclick="togglePasswordVisibility(event)">&#128065;</span>
+                                    </div>
+
+                                    <button type="submit" class="aa-browse-btn">Iniciar</button>
+                                }
+                            </div>
+
+                            <style>
+                                .password-container {
+                                    position: relative;
+                                }
+
+                                .password-toggle-icon {
+                                    position: absolute;
+                                    top: 35%;
+                                    transform: translateY(-50%);
+                                    right: 10px;
+                                    cursor: pointer;
+                                    color: #777;
+                                    font-size: 18px; /* Ajusta el tamaño del ícono según sea necesario */
+                                }
+
+                                .text-danger {
+                                    color: red;
+                                    font-size: 14px;
+                                    margin-top: 5px;
+                                }
+                            </style>
+
+                            <script>
+                                function togglePasswordVisibility(event) {
+                                    event.preventDefault(); // Evita el comportamiento predeterminado del evento de clic
+
+                                    var passwordInput = document.getElementById("Password");
+
+                                    if (passwordInput.type === "password") {
+                                        passwordInput.type = "text";
+                                    } else {
+                                        passwordInput.type = "password";
+                                    }
+                                }
+                            </script>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="aa-myaccount-register">
+
+
+                                <h4>Registrarse</h4>
+
+                                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "aa-login-form" }))
+                                {
+                                    <label for="First_Name">Primer Nombre<span>*</span></label>
+                                    <input name="First_Name" id="First_Name" type="text" placeholder="Ingrese su Primer Nombre" class="form-input" required value="@Request.Form["First_Name"]">
+
+                                    <label for="Last_Name">Apellido<span>*</span></label>
+                                    <input name="Last_Name" id="Last_Name" type="text" placeholder="Ingrese su Segundo Nombre" class="form-input" required value="@Request.Form["Last_Name"]">
+
+                                    <label for="UserName_Register">Usuario<span>*</span></label>
+                                    <input name="UserName" id="UserName_Register" type="text" placeholder="Ingrese el nombre de Usuario" class="form-input" required value="@Request.Form["UserName"]">
+
+                                    <label for="Password_Register">Contraseña<span>*</span></label>
+                                    <input id="Password_Register" name="Password" type="text" placeholder="Contraseña" class="form-input"
+                                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}"
+                                           title="La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra mayúscula, una letra minúscula, un número y un carácter especial."
+                                           required
+                                           value="@Request.Form["Password"]">
+                                    <script>
+                                        function validarPassword() {
+                                            var password = document.getElementById("Password_Register").value;
+                                            var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/;
+                                            if (!regex.test(password)) {
+                                                alert("La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.");
+                                                return false;
+                                            }
+                                            return true;
+                                        }
+                                    </script>
+
+                                    <label for="Email">Correo Electrónico<span>*</span></label>
+                                    <input id="Email" name="Email" type="email" placeholder="Ingrese su correo electrónico" title="Ingrese un correo electrónico válido" class="form-input" value="@Request.Form["Email"]" required>
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+                                    <br>
+                                    if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
+                                    {
+                                        <div class="alert alert-danger">
+                                            @ViewData["ErrorMessage"]
+                                        </div>
+                                    }
+                                    <label for="Mobile1">Teléfono<span>*</span></label>
+                                    <input id="Mobile1" name="Mobile1" type="text" placeholder="Ingrese su Teléfono" class="form-input"
+                                           pattern="[0-9]{8}" title="El teléfono debe contener exactamente 8 números" required
+                                           value="@Request.Form["Mobile1"]">
+
+
+                                    <label for="Country">Provincia<span>*</span></label>
+                                    <select id="Country" name="Country" required>
+                                        <option value="">Seleccione su Provincia</option>
+                                        <option value="San José">San José</option>
+                                        <option value="Alajuela">Alajuela</option>
+                                        <option value="Cartago">Cartago</option>
+                                        <option value="Heredia">Heredia</option>
+                                        <option value="Guanacaste">Guanacaste</option>
+                                        <option value="Puntarenas">Puntarenas</option>
+                                        <option value="Limón">Limón</option>
+                                    </select>
+                                    <br>
+
+                                    <label for="Address1">Dirección<span>*</span></label>
+                                    <input name="Address1" id="Address1" type="text" placeholder="Ingrese su Dirección" class="form-input" required value="@Request.Form["Address1"]">
+
+                                    <button type="submit" class="aa-browse-btn">Registrar</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- / Cart view section -->
+
+<style>
+    .form-input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var inputs = document.querySelectorAll('.form-input');
+
+        inputs.forEach(function (input) {
+            input.addEventListener('blur', function () {
+                if (!this.classList.contains('exempt-validation') && this.value.trim() === '' && !this.classList.contains('error')) {
+                    this.setCustomValidity('Por favor ingresar ' + this.getAttribute('placeholder').toLowerCase());
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+        });
+    });
+</script>

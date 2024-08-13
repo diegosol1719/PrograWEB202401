@@ -1,0 +1,126 @@
+﻿@model IPagedList<Khareedo.Models.AdminUsers>
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Lista de Empleados";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+}
+<style>
+    .search-container {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        margin-bottom: 10px;
+    }
+
+        .search-container .input-group {
+            width: 300px; /* Ancho fijo para el input-group */
+        }
+
+        .search-container .search-input {
+            flex: 1; /* El input toma el espacio disponible */
+        }
+
+        .search-container .search-button {
+            margin-left: -1px; /* Ajuste mínimo para evitar superposición */
+        }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse; /* Colapsar bordes de la tabla */
+        table-layout: fixed; /* Fijar el ancho de la tabla */
+    }
+
+        .table th, .table td {
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #ddd; /* Borde delgada */
+        }
+
+        .table th {
+            background-color: #343a40; /* Fondo gris oscuro para el encabezado */
+            color: #fff; /* Texto blanco */
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Fondo gris claro para filas pares */
+        }
+
+        .table tbody tr:hover {
+            background-color: #e9f5fb; /* Fondo azul claro al pasar el ratón */
+        }
+
+    .pagination-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+
+<p>
+    <a href="@Url.Action("Create", "Employee")" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar</a>
+</p>
+
+<div class="search-container">
+    @using (Html.BeginForm("Index", "Employee", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="input-group">
+            @Html.TextBox("searchString", ViewBag.SearchString as string, new { @class = "form-control", placeholder = "Buscar empleado..." })
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </span>
+        </div>
+    }
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Edad</th>
+                <th>Género</th>
+                <th>Correo Electrónico</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Nombre de Usuario</th>
+                <th>Contraseña</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Age)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                    <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Password)</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-sm btn-primary" href="@Url.Action("Edit", "Employee", new { id = item.UserID })" aria-label="Editar" data-toggle="tooltip" data-placement="top" title="Editar">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a class="btn btn-sm btn-info" href="@Url.Action("Details", "Employee", new { id = item.UserID })" aria-label="Detalles" data-toggle="tooltip" data-placement="top" title="Detalles">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
+                            <a class="btn btn-sm btn-danger" href="@Url.Action("Delete", "Employee", new { id = item.UserID })" aria-label="Eliminar" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.SearchString }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>

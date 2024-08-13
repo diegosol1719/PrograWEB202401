@@ -1,0 +1,177 @@
+﻿@model Khareedo.Models.Customers
+
+@{
+    ViewBag.Title = "Cliente";
+    ViewBag.SubTitle = "Detalles";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <dl class="dl-horizontal ">
+            <dt>
+                Primer Nombre
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.First_Name)
+            </dd>
+
+            <dt>
+                Apellido
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Last_Name)
+            </dd>
+
+            <dt>
+                Usuario
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+
+            <dt>
+                Contraseña
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Password)
+            </dd>
+
+            <dt>
+                Edad
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Age)
+            </dd>
+
+            <dt>
+                Genero
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Gender)
+            </dd>
+
+
+
+
+
+            <dt>
+                Provincia
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Country)
+            </dd>
+
+            <dt>
+                Pais
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.State)
+            </dd>
+
+            <dt>
+                Ciudad
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.City)
+            </dd>
+
+            <dt>
+                Codigo Postal
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PostalCode)
+            </dd>
+
+            <dt>
+                Correo
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt>
+                Correo Alternativo
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AltEmail)
+            </dd>
+
+            <dt>
+                Teléfono Fijo
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Phone1)
+            </dd>
+
+            <dt>
+                Teléfono Fijo Alternativo
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Phone2)
+            </dd>
+
+            <dt>
+                Teléfono
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Mobile1)
+            </dd>
+
+            <dt>
+                Teléfono Alternativo
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Mobile2)
+            </dd>
+
+            <dt>
+                Dirección
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Address1)
+            </dd>
+
+            <dt>
+                Dirección Alternativa
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Address2)
+            </dd>
+
+            <dt>
+                Notas
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Notes)
+            </dd>
+
+        </dl>
+    </div>
+    <br />
+</div>
+<p>
+    @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-primary" })
+</p>
+
+
+

@@ -1,0 +1,175 @@
+﻿@model Khareedo.Models.Products
+
+@{
+    ViewBag.Title = "Detalles del Producto";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+
+}
+
+<h2>@Model.Name</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <dl class="dl-horizontal ">
+            <dt>
+                Nombre
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.QuantityPerUnit)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.QuantityPerUnit)
+            </dd>
+
+            <dt>
+                Precio Con Oferta
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UnitPrice)
+            </dd>
+
+            <dt>
+                Precio sin Oferta
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OldPrice)
+            </dd>
+
+
+            <dt>
+                Unidades Disponibles
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UnitInStock)
+            </dd>
+
+            <dt>
+                Unidades en Orden
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UnitOnOrder)
+            </dd>
+
+            <dt>
+                Producto Disponible
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ProductAvailable)
+            </dd>
+
+            <dt>
+                Imagen(URL)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ImageURL)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.AltText)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AltText)
+            </dd>
+
+            <dt>
+                Oferta Disponible
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AddBadge)
+            </dd>
+
+            <dt>
+                Titulo de la oferta
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OfferTitle)
+            </dd>
+
+            <dt>
+                Color de oferta
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OfferBadgeClass)
+            </dd>
+
+            <dt>
+                Descripción Corta
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ShortDescription)
+            </dd>
+
+            <dt>
+                Descripción Larga
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LongDescription)
+            </dd>
+
+
+            <dt>
+                Nota
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Note)
+            </dd>
+
+            <dt>
+                Categoria
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Categories.Name)
+            </dd>
+
+            <dt>
+                SubCategoria
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SubCategory.Name)
+            </dd>
+
+            <dt>
+                Proveedor
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Suppliers.CompanyName)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-4">
+        <div>
+            @if (!string.IsNullOrEmpty(Model.ImageURL))
+            {
+                <img src="@Model.ImageURL" alt="Imagen del producto" class="img-thumbnail" style="max-width: 160px; max-height: 160px;" />
+            }
+            else
+            {
+                <img src="~/Content/Images/ProfileImage.svg" alt="Imagen predeterminada" class="img-thumbnail" style="max-width: 160px; max-height: 160px;" />
+            }
+        </div><br />
+
+    </div>
+</div>
+@Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-primary" })

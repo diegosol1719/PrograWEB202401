@@ -1,0 +1,76 @@
+﻿@model Khareedo.Models.Asistencia
+
+@{
+    ViewBag.Title = "Asistencia";
+    ViewBag.SubTitle = "Crear";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "Asistencia", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div class="form-group">
+            @Html.Label("UserID", "Usuario", new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <!-- Ajustar el tamaño del contenedor -->
+                @Html.DropDownListFor(model => model.UserID, (IEnumerable<SelectListItem>)ViewBag.Users, "Seleccione un usuario", new { @class = "form-control form-control-sm" }) <!-- Cambiar a form-control-sm para un tamaño más pequeño -->
+                @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Fecha, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <!-- Ajustar el tamaño del contenedor -->
+                @Html.EditorFor(model => model.Fecha, new { htmlAttributes = new { @class = "form-control form-control-sm", @type = "date" } }) <!-- Cambiar a form-control-sm para un tamaño más pequeño -->
+                @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Estado, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <!-- Ajustar el tamaño del contenedor -->
+                @Html.DropDownListFor(model => model.Estado, new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "Llegó tarde", Text = "Llegó tarde" },
+                    new SelectListItem { Value = "Falta", Text = "Falta" },
+                    new SelectListItem { Value = "Salida anticipada", Text = "Salida anticipada" }
+                }, "Value", "Text"), new { @class = "form-control form-control-sm" }) <!-- Cambiar a form-control-sm para un tamaño más pequeño -->
+                @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HoraEntrada, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <!-- Ajustar el tamaño del contenedor -->
+                @Html.TextBoxFor(model => model.HoraEntrada, "{0:HH:mm}", new { @class = "form-control form-control-sm", @type = "time" }) <!-- Cambiar a form-control-sm para un tamaño más pequeño -->
+                @Html.ValidationMessageFor(model => model.HoraEntrada, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HoraSalida, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <!-- Ajustar el tamaño del contenedor -->
+                @Html.TextBoxFor(model => model.HoraSalida, "{0:HH:mm}", new { @class = "form-control form-control-sm", @type = "time" }) <!-- Cambiar a form-control-sm para un tamaño más pequeño -->
+                @Html.ValidationMessageFor(model => model.HoraSalida, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

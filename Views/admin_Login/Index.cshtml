@@ -1,0 +1,171 @@
+﻿@model Khareedo.Models.AdminUsers
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Mi Mercadito - Inicio de Sesión</title>
+    @Styles.Render("~/Content/css")
+    <link rel="icon" type="image/png" href="~/logo.png">
+    <style>
+        body {
+            background-image: url('../local.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center top 0px;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column; /* Alinea elementos en columna */
+        }
+
+        .panel {
+            width: 400px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+            border-color: #1e8535;
+            margin-bottom: 20px; /* Añade espacio debajo del panel */
+        }
+
+        .panel-heading {
+            text-align: center;
+            background-color: #1e8535 !important;
+            color: white;
+            border-color: #1e8535;
+            font-size: 24px;
+            padding: 10px;
+        }
+
+        .panel-body {
+            padding: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .btn-login {
+            background-color: #1e8535;
+            border-color: #1e8535;
+            color: white;
+        }
+
+            .btn-login:hover,
+            .btn-login:focus {
+                background-color: #1e8535;
+                border-color: #1e8535;
+                color: white;
+            }
+
+        .text-danger {
+            text-align: center;
+            border-color: #ff6347;
+            color: red;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Estilos para el botón de volver */
+        .btn-volver {
+            background-color: #d9534f; /* Color de fondo rojo */
+            border-color: #d9534f; /* Color del borde rojo */
+            color: white; /* Texto blanco */
+            margin-top: 10px; /* Espacio arriba del botón */
+            margin-left: 10px; /* Espacio a la izquierda del botón */
+            width: 100px; /* Ancho del botón */
+            position: absolute; /* Posición absoluta para fijarlo abajo a la izquierda */
+            bottom: 10px; /* Ajusta el botón al borde inferior */
+            left: 10px; /* Ajusta el botón al borde izquierdo */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2 class="panel-title">Mi Mercadito Admin</h2>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Login", "admin_Login", FormMethod.Post, new { @class = "form-signin", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre de Usuario" } })
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <div class="password-container">
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Contraseña", id = "Password" })
+                            <span class="password-toggle-icon" onclick="togglePasswordVisibility()">&#128065;</span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+
+                    <style>
+                      
+
+                        .password-toggle-icon {
+                            position: absolute;
+                            top: 50%;
+                            right: 10px;
+                            transform: translateY(-50%);
+                            cursor: pointer;
+                            color: #777;
+                            font-size: 18px; 
+                            z-index: 200; /* Asegúrate de que el icono esté por encima del campo de entrada */
+                        }
+                    </style>
+
+                    <script>
+                        function togglePasswordVisibility() {
+                            var passwordInput = document.getElementById("Password");
+                            var type = passwordInput.type === "password" ? "text" : "password";
+                            passwordInput.type = type;
+                        }
+                    </script>
+
+
+                    <button type="submit" class="btn btn-lg btn-primary btn-block btn-login">Iniciar Sesión</button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón Volver o Cerrar Sesión -->
+    <form action="@Url.Action("Logout", "Account")" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="returnUrl" value="@Request.UrlReferrer?.ToString()" />
+        <button type="submit" class="btn btn-danger btn-volver">
+            @if (Session["username"] != null && Request.UrlReferrer != null)
+            {
+                <span>Volver</span>
+            }
+            else
+            {
+                <span>Volver</span>
+            }
+        </button>
+    </form>
+    <!-- Fin Botón Volver o Cerrar Sesión -->
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>
+

@@ -1,0 +1,116 @@
+﻿@model PagedList.IPagedList<Khareedo.Models.Categories>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Lista de Categorías";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+}
+
+<style>
+    .search-container {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        margin-bottom: 10px;
+    }
+
+        .search-container .input-group {
+            width: 300px; /* Ancho fijo para el input-group */
+        }
+
+        .search-container .search-input {
+            flex: 1; /* El input toma el espacio disponible */
+        }
+
+        .search-container .search-button {
+            margin-left: -1px; /* Ajuste mínimo para evitar superposición */
+        }
+
+    .table-container {
+        margin: 20px auto;
+        width: 95%; /* Ancho del contenedor de la tabla */
+    }
+
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse; /* Colapsar bordes de la tabla */
+            table-layout: fixed; /* Fijar el ancho de la tabla */
+        }
+
+        .table-container th, .table-container td {
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #ddd; /* Borde delgada */
+        }
+
+    .table th {
+        background-color: #293037; /* Fondo gris oscuro para el encabezado */
+        color: #fff; /* Texto blanco */
+    }
+
+        .table-container tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Fondo gris claro para filas pares */
+        }
+
+        .table-container tbody tr:hover {
+            background-color: #e9f5fb; /* Fondo azul claro al pasar el ratón */
+        }
+
+    .pagination-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+
+<div>
+    <a href="@Url.Action("Create", "Categories")" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar</a>
+</div>
+
+<div class="search-container">
+    @using (Html.BeginForm("Index", "Categories", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="input-group">
+            @Html.TextBox("searchString", ViewBag.SearchString as string, new { @class = "form-control", placeholder = "Buscar categorías..." })
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </span>
+        </div>
+    }
+</div>
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.isActive)</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="@Url.Action("Edit", "Categories", new { id = item.CategoryID })" aria-label="Editar" data-toggle="tooltip" data-placement="top" title="Editar">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </a>
+                        <a class="btn btn-sm btn-info" href="@Url.Action("Details", "Categories", new { id = item.CategoryID })" aria-label="Detalles" data-toggle="tooltip" data-placement="top" title="Ver Detalles">
+                            <i class="fa fa-info" aria-hidden="true"></i>
+                        </a>
+                        <a class="btn btn-sm btn-danger" href="@Url.Action("Delete", "Categories", new { id = item.CategoryID })" aria-label="Eliminar" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.SearchString }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>

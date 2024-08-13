@@ -1,0 +1,37 @@
+﻿@model Khareedo.Models.Asistencia
+
+@{
+    ViewBag.Title = "Asistencia";
+    ViewBag.SubTitle = "Eliminar";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+
+}
+
+<div>
+    <div class="alert alert-danger">
+        <strong>Advertencia!</strong> ¿Está seguro de que desea eliminar esta Asistencia?
+    </div>    <div>
+        <dl class="dl-horizontal">
+            <dt>Usuario:</dt>
+            <dd>@Model.UserID</dd>
+            <dt>Fecha:</dt>
+            <dd>@Model.Fecha.ToShortDateString()</dd>
+            <dt>Hora de Entrada:</dt>
+            <dd>@Model.HoraEntrada</dd>
+            <dt>Hora de Salida:</dt>
+            <dd>@Model.HoraSalida</dd>
+            <dt>Estado:</dt>
+            <dd>@Model.Estado</dd>
+        </dl>
+    </div>
+
+    @using (Html.BeginForm("Delete", "Asistencia", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.AsistenciaID)
+        <div>
+            <input type="submit" value="Eliminar" class="btn btn-danger" />
+            @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    }
+</div>

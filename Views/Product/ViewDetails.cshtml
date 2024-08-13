@@ -1,0 +1,266 @@
+﻿@model Khareedo.Models.Products
+
+@{
+    ViewBag.Title = "View Details";
+}
+<link href="~/Content/css/style.css" rel="stylesheet" />
+<!-- product category -->
+<section id="aa-product-details">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-product-details-area">
+                    <div class="aa-product-details-content">
+                        <div class="row">
+                            <!-- Modal view slider -->
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                <div class="aa-product-view-slider">
+                                    <div id="demo-1" class="simpleLens-gallery-container">
+                                        <div class="simpleLens-container">
+                                            <div class="simpleLens-big-image-container"><a data-lens-image="@Model.ImageURL" class="simpleLens-lens-image"><img src="@Model.ImageURL" class="simpleLens-big-image"></a></div>
+                                        </div>
+                                        @*<div class="simpleLens-thumbnails-container">
+                                <a data-big-image="../../Content/img/view-slider/medium/polo-shirt-1.png" data-lens-image="../../Content/img/view-slider/large/polo-shirt-1.png" class="simpleLens-thumbnail-wrapper" href="#">
+                                    <img src="../../Content/img/view-slider/thumbnail/polo-shirt-1.png">
+                                </a>
+                                <a data-big-image="../../Content/img/view-slider/medium/polo-shirt-3.png" data-lens-image="../../Content/img/view-slider/large/polo-shirt-3.png" class="simpleLens-thumbnail-wrapper" href="#">
+                                    <img src="../../Content/img/view-slider/thumbnail/polo-shirt-3.png">
+                                </a>
+                                <a data-big-image="../../Content/img/view-slider/medium/polo-shirt-4.png" data-lens-image="../../Content/img/view-slider/large/polo-shirt-4.png" class="simpleLens-thumbnail-wrapper" href="#">
+                                    <img src="../../Content/img/view-slider/thumbnail/polo-shirt-4.png">
+                                </a>
+
+                            </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal view content -->
+                            <div class="col-md-7 col-sm-7 col-xs-12">
+                                <div class="aa-product-view-content">
+                                    <h3><strong> @Model.Name</strong></h3>
+                                    <div class="aa-product-rating">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (ViewBag.AvgRate >= i)
+                                            {
+                                                <span class="fa fa-star" style="color: #ff6600"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fa fa-star-o" style="color: #ff6600"></span>
+                                            }
+                                        }
+
+                                    </div>
+
+                                    <div class="aa-price-block">
+                                        <span class="aa-product-view-price">₡/ <b> @Model.UnitPrice</b></span>
+                                        @if (Model.UnitInStock > 0)
+                                        {
+                                            <p class="aa-product-avilability"><span style="color:white ;background-color:green">Disponible</span>(@Model.UnitInStock)</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="aa-product-avilability"><span style="color:white;background-color:red">Agotado</span></p>
+                                        }
+                                        @{
+                                            TempData["returnURL"] = Request.RawUrl;
+                                        }
+
+
+                                    </div>
+                                    <p>@Model.ShortDescription</p>
+                                    @*<h4>Size</h4>
+                        <div class="aa-prod-view-size">
+                            <a href="#">S</a>
+                            <a href="#">M</a>
+                            <a href="#">L</a>
+                            <a href="#">XL</a>
+                        </div>
+                        <h4>Color</h4>
+                        <div class="aa-color-tag">
+                            <a href="#" class="aa-color-green"></a>
+                            <a href="#" class="aa-color-yellow"></a>
+                            <a href="#" class="aa-color-pink"></a>
+                            <a href="#" class="aa-color-black"></a>
+                            <a href="#" class="aa-color-white"></a>
+                        </div>*@
+                                    @*<div class="aa-prod-quantity">
+                            <h4>Cantidad:</h4>
+                            <form action="">
+                                <input type="number" name="quantity" min="1" max="99" maxlength="2" value="1" />
+                            </form>
+                        </div>*@
+                                    <div class="aa-prod-view-bottom">
+                                        @if (Model.UnitInStock > 0)
+                                        {
+                                            <a class="aa-add-to-cart-btn" href="@(Session["username"] != null ? Url.Action("AddToCart", "Product", new { id=Model.ProductID}) : Url.Action("Login", "Account"))">Añadir al carrito</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="aa-add-to-cart-btn" ))">Agotado</a>
+
+                                        }
+                                        <a class="aa-add-to-cart-btn" href="@(Session["username"] != null ? Url.Action("WishList", "Product", new { id = Model.ProductID }) : Url.Action("Login", "Account"))">Lista de deseados</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="aa-product-details-bottom">
+                        <ul class="nav nav-tabs" id="myTab2">
+                            <li><a href="#description" data-toggle="tab">Descripción</a></li>
+                            <li><a href="#review" data-toggle="tab">Reseña</a></li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="description">
+                                @if (Model != null && !string.IsNullOrEmpty(Model.LongDescription))
+                                {
+                                    <p>@Html.Raw(Model.LongDescription)</p>
+                                }
+                                else
+                                {
+                                    <p>Ninguna Descripcion</p>
+                                }
+                            </div>
+
+                            <div class="tab-pane fade" id="review">
+                                <div class="aa-product-review-area">
+                                    <h4><b>@ViewBag.TotalReviews</b> Reseñas para @Model.Name</h4>
+                                    <ul class="aa-review-nav">
+                                        @if (ViewBag.Reviews != null)
+                                        {
+                                            foreach (var item in ViewBag.Reviews)
+                                            {
+                                                <li>
+                                                    <div class="media">
+                                                        <!-- Imagen del cliente -->
+                                                        <div class="media-left">
+                                                            <img src="~/Content/logo.png" alt="Imagen predeterminada" class="img-thumbnail" style="max-width: 80px; max-height: 80px;">
+
+                                                            @* @if (item.Customer != null && !string.IsNullOrEmpty(item.Customer.Picture))
+                                                {
+                                                    <img src="@Url.Content(item.Customer.Picture)" alt="Imagen del cliente" class="img-thumbnail" style="max-width: 80px; max-height: 80px;">
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/Content/img/ProfileImage.svg" alt="Imagen predeterminada" class="img-thumbnail" style="max-width: 80px; max-height: 80px;">
+                                                }*@
+                                                        </div>
+
+
+                                                        <!-- Contenido de la reseña -->
+                                                        <div class="media-body">
+                                                            <h4 class="media-heading"><strong>@item.Name</strong> - <span>@item.DateTime</span></h4>
+                                                            <div class="aa-product-rating">
+                                                                @for (int i = 1; i <= 5; i++)
+                                                                {
+                                                                    if (@item.Rate >= i)
+                                                                    {
+                                                                        <span class="fa fa-star"></span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="fa fa-star-o"></span>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                            <p>@item.Review1</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            }
+                                        }
+
+                                    </ul>
+                                    <h4>Añadir Reseña</h4>
+                                    @if (Session["username"] != null)
+                                    {
+                                        using (Html.BeginForm("AddReview", "Product", new { productID = @Model.ProductID }, FormMethod.Post, new { @class = "aa-review-form" }))
+                                        {
+                                            <div class="aa-your-rating">
+                                                <p>Tu Reseña</p>
+                                                <span class="star" data-value="1"><span class="fa fa-star-o"></span></span>
+                                                <span class="star" data-value="2"><span class="fa fa-star-o"></span></span>
+                                                <span class="star" data-value="3"><span class="fa fa-star-o"></span></span>
+                                                <span class="star" data-value="4"><span class="fa fa-star-o"></span></span>
+                                                <span class="star" data-value="5"><span class="fa fa-star-o"></span></span>
+                                                <input type="hidden" name="rate" id="rate" value="1" />
+                                            </div>
+
+                                            <script>
+                                                // Captura todas las estrellas
+                                                const stars = document.querySelectorAll('.star');
+
+                                                // Maneja el evento de clic en cada estrella
+                                                stars.forEach(star => {
+                                                    star.addEventListener('click', function () {
+                                                        const value = parseInt(this.getAttribute('data-value'));
+
+                                                        // Actualiza la clase de las estrellas para reflejar la calificación seleccionada
+                                                        stars.forEach(s => {
+                                                            const starValue = parseInt(s.getAttribute('data-value'));
+                                                            const starIcon = s.querySelector('span');
+
+                                                            if (starValue <= value) {
+                                                                starIcon.classList.remove('fa-star-o');
+                                                                starIcon.classList.add('fa-star');
+                                                            } else {
+                                                                starIcon.classList.remove('fa-star');
+                                                                starIcon.classList.add('fa-star-o');
+                                                            }
+                                                        });
+
+                                                        // Actualiza el valor del campo oculto
+                                                        document.getElementById('rate').value = value;
+                                                    });
+                                                });
+                                            </script>
+
+                                            <!-- review form -->
+
+                                            <div class="form-group">
+                                                <label for="message">Su Reseña</label>
+                                                <textarea class="form-control" rows="3" name="message"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="name">Nombre</label>
+                                                <input type="text" class="form-control" name="name" placeholder="Name" value="@Session["username"]" readonly>
+                                            </div>
+
+
+
+                                            <button type="submit" class="btn btn-default aa-review-submit">Enviar</button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                <label>Inicie sesión para agregar su reseña.</label>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br /><br />
+                    <!-- Related product -->
+                    <div class="aa-product-related-item">
+                        <h3>Productos Similares</h3>
+                        <ul class="aa-product-catg aa-related-item-slider">
+                            <!-- start single product item -->
+                            @foreach (var item in (List<Khareedo.Models.Products>)ViewBag.RelatedProducts)
+                            {
+                                @Html.Partial("_Product", item)
+                            }
+                            <!-- end single product item -->
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- / product category -->

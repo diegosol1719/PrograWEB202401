@@ -1,0 +1,33 @@
+﻿@model Khareedo.Models.AdminUsers
+
+@{
+    ViewBag.Title = "Empleado";
+    ViewBag.SubTitle = "Eliminar";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+}
+
+
+<div class="alert alert-danger">
+    <strong>Advertencia!</strong> ¿Está seguro de que desea eliminar este Empleado?
+</div>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Primer Nombre</dt>
+        <dd>@Html.DisplayFor(model => model.FirstName)</dd>
+        <dt>Apellido</dt>
+        <dd>@Html.DisplayFor(model => model.LastName)</dd>
+        <dt>Correo</dt>
+        <dd>@Html.DisplayFor(model => model.Email)</dd>
+        <!-- Agrega más campos aquí según sea necesario -->
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+<div class="form-actions no-color">
+    <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+    @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-primary" })
+</div>
+    }
+</div>

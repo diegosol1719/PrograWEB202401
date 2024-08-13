@@ -1,0 +1,122 @@
+﻿@model PagedList.IPagedList<Khareedo.Models.Customers>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Clientes";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+}
+
+<style>
+    .search-container {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        margin-bottom: 10px;
+    }
+
+        .search-container .input-group {
+            width: 300px; /* Ancho fijo para el input-group */
+        }
+
+        .search-container .search-input {
+            flex: 1; /* El input toma el espacio disponible */
+        }
+
+        .search-container .search-button {
+            margin-left: -1px; /* Ajuste mínimo para evitar superposición */
+        }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse; /* Colapsar bordes de la tabla */
+        table-layout: fixed; /* Fijar el ancho de la tabla */
+    }
+
+        .table th, .table td {
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #ddd; /* Borde delgada */
+        }
+
+        .table th {
+            background-color: #343a40; /* Fondo gris oscuro para el encabezado */
+            color: #fff; /* Texto blanco */
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Fondo gris claro para filas pares */
+        }
+
+        .table tbody tr:hover {
+            background-color: #e9f5fb; /* Fondo azul claro al pasar el ratón */
+        }
+
+    .pagination-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+
+<div>
+    <a href="@Url.Action("Create", "Customer")" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar</a>
+</div>
+
+<div class="search-container">
+    @using (Html.BeginForm("Index", "Customer", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="input-group">
+            @Html.TextBox("searchString", ViewBag.SearchString as string, new { @class = "form-control", placeholder = "Buscar cliente..." })
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </span>
+        </div>
+    }
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Primer Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Edad</th>
+                <th scope="col">Provincia</th>
+                <th scope="col">Correo</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.CustomerID)</td>
+                    <td>@Html.DisplayFor(modelItem => item.First_Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Last_Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Age)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Country)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Mobile1)</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-sm btn-primary" href="@Url.Action("Edit", "Customer", new { id = item.CustomerID })" aria-label="Edit" data-toggle="tooltip" data-placement="top" title="Editar">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                            <a class="btn btn-sm btn-info" href="@Url.Action("Details", "Customer", new { id = item.CustomerID })" aria-label="Details" data-toggle="tooltip" data-placement="top" title="Ver Detalles">
+                                <i class="fa fa-info" aria-hidden="true"></i>
+                            </a>
+                            <a class="btn btn-sm btn-danger" href="@Url.Action("Delete", "Customer", new { id = item.CustomerID })" aria-label="Delete" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.SearchString }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>

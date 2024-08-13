@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi Mercadito | @ViewBag.Title</title>
+
+    @Styles.Render("~/Content/css")
+
+    <link rel="icon" type="image/png" href="~/logo.png">
+
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+    <script src="~/Content/js/jquery.min.js"></script>
+
+    <!-- Ad intellisence for searching products-->
+
+    <link href="~/Content/Intellisence/css/jquery-ui.min.css" rel="stylesheet" />
+    <script src="~/Content/Intellisence/js/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/Intellisence/js/jquery-ui.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $("#searchTxtBox").autocomplete({
+                source: '@Url.Action("GetProducts","Product")'
+            });
+        });
+    </script>
+
+</head>
+<style>
+    /* Asegurar que el contenedor principal ocupe al menos el 100% del alto de la pantalla */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Usar flexbox para que el contenido principal ocupe el espacio disponible */
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Asegurar que el pie de página se posicione en la parte inferior de la pantalla */
+    footer {
+        margin-top: auto;
+        background: #000; /* Color de fondo para el footer */
+        padding: 10px 0; /* Ajustar padding según sea necesario */
+        color: white; /* Color del texto del footer */
+    }
+
+        /* Ajustar márgenes y padding del contenido del footer */
+        footer .container,
+        footer .row,
+        footer .col-md-12,
+        footer .footer-menu,
+        footer .footer-contact,
+        footer .footer-item {
+            margin: 0;
+            padding: 0;
+        }
+
+    /* Ajustes adicionales para asegurar que no haya espacio adicional */
+    .content {
+        flex: 1;
+    }
+</style>
+<body>
+    <!-- wpf loader Two -->
+    <div id="wpf-loader-two">
+        <div class="wpf-loader-two-inner">
+            <span>Cargando...</span>
+        </div>
+    </div>
+    <!-- / wpf loader Two -->
+    <!-- SCROLL TOP BUTTON -->
+    <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
+    <!-- END SCROLL TOP BUTTON -->
+    <!-- Start header section -->
+    <header id="aa-header">
+        <!-- start header top  -->
+        <div class="aa-header-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="aa-header-top-area">
+                            <!-- start header top left -->
+                            <div class="aa-header-top-left">
+                                <!-- start language -->
+                                <!-- / language -->
+                                <!-- start currency -->
+                                <div class="aa-currency">
+                                    <div class="dropdown">
+                                        <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <i class="fa fa-money"></i>CRC₡
+                                            @*<span class="caret"></span>*@
+                                        </a>
+                                        @*<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                <li><a href="#"><i class="fa fa-euro"></i>EURO</a></li>
+                                                <li><a href="#"><i class="fa fa-usd"></i>USD</a></li>
+                                            </ul>*@
+                                    </div>
+                                </div>
+                                <!-- / currency -->
+                                <!-- start cellphone -->
+                                <div class="cellphone hidden-xs">
+                                    <p><span class="fa fa-phone"></span>+506-6186 5051</p>
+                                </div>
+                                <!-- / cellphone -->
+                            </div>
+                            <!-- / header top left -->
+                            <div class="aa-header-top-right">
+                                <ul class="aa-head-top-nav-right">
+
+                                    <li><a href="@(Session["username"] != null ? Url.Action("Index", "Account") : Url.Action("Login", "Account"))">Mi Cuenta</a></li>
+                                    <li class="hidden-xs">
+                                        <a href="@(Session["username"] != null ? Url.Action("Index", "WishList") : Url.Action("Login", "Account"))">
+                                            Lista De Deseados
+                                            @if (ViewBag.WlItemsNo > 0)
+                                            {
+                                                <text>(@ViewBag.WlItemsNo)</text>
+                                            }
+                                        </a>
+                                    </li>
+
+
+
+                                    <li class="hidden-xs">
+                                        <a href="@(Session["username"] != null ? Url.Action("Index", "Orders") : Url.Action("Login", "Account"))">
+                                            Ordenes
+                                        </a>
+                                    </li>
+
+
+                                    @if (Session["username"] == null)
+                                    {
+
+                                        <li>@Html.ActionLink("Iniciar Sesión", "Login", "Account")</li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@Url.Action("Logout","Account")">Cerrar Sesion</a></li>
+                                        <li><a href="">@Session["username"]</a></li>
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / header top  -->
+        <!-- start header bottom  -->
+        <div class="aa-header-bottom" style="text-align: center;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="aa-header-bottom-area" style="display: flex; justify-content: center; align-items: center; padding: 0px 0;">
+                            <!-- Logo y título -->
+                            <div class="aa-logo" style="margin-right: auto;">
+                                <a href="@Url.Action("Index","Home")">
+                                    <img src="/images/logo.png" alt="Logo" style="width: 150px; height: auto; display: block; margin: auto;">
+                                    <p style="margin-top: 5px;">Mi<strong> Mercadito</strong></p>
+                                </a>
+                            </div>
+                            <!-- / Logo y título -->
+                            <!-- Contenedor para búsqueda y carrito -->
+                            <div class="aa-cart-search-container" style="display: flex; align-items: center; margin-left: auto; margin-right: auto;">
+                                <!-- Search box -->
+                                <div class="aa-search-container" style="text-align: center; margin-right: 10px;">
+                                    <div class="aa-search-box" style="display: inline-block;">
+                                        <form action="@Url.Action("Search","Product")" method="get">
+                                            <input type="text" name="product" id="searchTxtBox" placeholder="Buscar producto . . . " style="margin-right: 5px; padding: 8px;">
+                                            <button type="submit" style="padding: 8px 12px;"><span class="fa fa-search"></span></button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- / Search box -->
+                                <!-- Cart box -->
+                                <div class="aa-cartbox" style="margin-left: 10px; margin-top: 25px;">
+                                    <!-- Ajuste de margen superior e inferior aquí -->
+                                    <a class="aa-cart-link" href="#">
+                                        <span class="fa fa-shopping-basket"></span>
+                                        <span class="aa-cart-title">Carrito</span>
+                                        <span class="aa-cart-notify">@(ViewBag.NoOfItem == null ? 0 : ViewBag.NoOfItem)</span>
+                                    </a>
+                                    <div class="aa-cartbox-summary">
+                                        <ul>
+                                            @if (Session["username"] != null)
+                                            {
+                                                Html.RenderPartial("_CartBox");
+                                            }
+                                        </ul>
+                                        <a class="aa-cartbox-checkout aa-primary-btn" href="@Url.Action("Index","MyCart")">Finalizar compra</a>
+                                    </div>
+                                </div>
+                                <!-- / Cart box -->
+                            </div>
+                            <!-- / Contenedor para búsqueda y carrito -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- / header bottom  -->
+    </header>
+    <!-- / header section -->
+    <!-- menu -->
+    <section id="menu">
+        <div class="container">
+            <div class="menu-area">
+                <!-- Navbar -->
+                <div class="navbar navbar-default" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="navbar-collapse collapse" style="display: flex; justify-content: center;">
+                        <!-- Left nav -->
+                        <ul class="nav navbar-nav" style="display: flex; justify-content: center; list-style: none; padding: 0;">
+                            <li style="margin: 0 10px;"><a href="@Url.Action("Index", "Home")">Inicio</a></li>
+                            @{
+                                Khareedo.Models.Entities db = new Khareedo.Models.Entities();
+                                List<Khareedo.Models.Categories> Categories = db.Categories.Where(c => c.isActive == true).ToList();
+                                int count = 0;
+                            }
+
+                            @foreach (var cat in Categories)
+                            {
+                                if (count < 8)
+                                {
+                                    <li style="margin: 0 10px;">
+                                        <a href="@Url.Action("GetProductsByCategory", "Product", new { categoryName = cat.Name.Trim() })">@cat.Name</a>
+                                    </li>
+                                    count++;
+                                }
+                            }
+                        </ul>
+                    </div><!--/.nav-collapse -->
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- / menu -->
+
+    @RenderBody()
+
+
+    <!-- / Subscribe section -->
+    <!-- footer -->
+    <style>
+        /* Estilo para fijar el footer al pie de la página */
+
+
+
+    </style>
+    <footer id="aa-footer">
+        <!-- footer bottom -->
+        <div class="aa-footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="aa-footer-top-area">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="aa-footer-widget">
+                                       
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="aa-footer-widget">
+                                        <div class="aa-footer-widget">
+                                            <h3>Contacto</h3>
+                                            <address>
+                                                <p>Urbanización Siboney, Calle Cordero San Pablo de Heredia, Heredia, San Pablo, 40101</p>
+                                                <p><span class="fa fa-phone"></span>+506-6186 5051</p>
+                                            </address>
+                                            <div class="aa-footer-social">
+                                                <a href="https://wa.me/message/DO2Q2K4VILRDK1" target="_blank"><span class="fa fa-comments-o"></span></a>
+                                                <a href="#"><span class="fa fa-twitter"></span></a>
+                                                <a href="https://www.google.com/maps/dir//mi+mercadito/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8fa0fb4e5a5a5e59:0x41ad9a2895551f85?sa=X&ved=1t:3061&ictx=111&cshid=1719532783290531" target="_blank">
+                                                    <span class="fa fa-map-marker"></span>
+                                                </a>
+                                                <a href="#"><span class="fa fa-youtube"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer-bottom -->
+        <div class="aa-footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="aa-footer-bottom-area">
+                            <p>Todos los derechos reservados ©Mi Mercadito</p>
+                            <div class="aa-footer-payment">
+                                <span class="fa fa-cc-mastercard"></span>
+                                <span class="fa fa-cc-visa"></span>
+                                <span class="fa fa-paypal"></span>
+                                <span class="fa fa-cc-discover"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- / footer -->
+
+    @Scripts.Render("~/Content/js")
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        $(function () {
+
+            // Initalize modal dialog
+            // attach modal-container bootstrap attributes to links with .modal-link class.
+            // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+            $('body').on('click', '.modal-link', function (e) {
+                e.preventDefault();
+                $(this).attr('data-target', '#login-modal');
+                $(this).attr('data-toggle', 'modal');
+            });
+
+            // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+            $('body').on('click', '.modal-close-btn', function () {
+                $('#login-modal').modal('hide');
+            });
+
+            //clear modal cache, so that new content can be loaded
+            $('#login-modal').on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+
+            $('#CancelModal').on('click', function () {
+                return false;
+            });
+        });
+    </script>
+
+
+
+</body>
+</html>

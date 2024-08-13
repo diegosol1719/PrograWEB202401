@@ -1,0 +1,89 @@
+﻿@model Khareedo.Models.Customers
+
+@{
+    ViewBag.Title = "Cliente";
+    ViewBag.SubTitle = "Eliminar";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+
+}
+
+<div class="alert alert-danger">
+    <strong>Advertencia!</strong> ¿Está seguro de que desea eliminar este Cliente?
+</div><hr />
+<div class="row">
+    <div class="col-md-8">
+        <dl class="dl-horizontal ">
+            <dt>
+                Primer Nombre
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.First_Name)
+            </dd>
+
+            <dt>
+                Apellido
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Last_Name)
+            </dd>
+
+            <dt>
+                Usuario
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+
+            <dt>
+                Contraseña
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Password)
+            </dd>
+
+            <dt>
+                Edad
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Age)
+            </dd>
+
+           
+            <dt>
+                Correo
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+          
+
+
+
+            <dt>
+                Notas
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Notes)
+            </dd>
+
+        </dl>
+    </div>
+    
+</div>
+@using (Html.BeginForm("Delete", "Customer", new { id = @Model.CustomerID }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-actions no-color">
+    <input type="submit" value="Eliminar" class="btn btn-danger" />
+    @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-primary" })
+</div>
+}

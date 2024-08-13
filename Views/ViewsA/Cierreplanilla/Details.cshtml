@@ -1,0 +1,203 @@
+﻿@model Khareedo.Controllers.CierreController.CierrePlanillaViewModel
+
+@{
+    ViewBag.Title = "Detalles de la Planilla";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+}
+
+<style>
+    .invoice-container {
+        margin: 20px auto;
+        padding: 20px;
+        max-width: 900px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        background-color: #f9f9f9;
+    }
+
+    .invoice-header {
+        border-bottom: 3px solid #6c8e23; /* Verde musgo */
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+
+    .invoice-header h2 {
+        margin: 0;
+        color: #6c8e23; /* Verde musgo */
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .invoice-header .date {
+        font-size: 16px;
+        color: #6c757d;
+    }
+
+    .invoice-details {
+        margin-bottom: 30px;
+    }
+
+    .invoice-details h4 {
+        margin: 0 0 15px 0;
+        color: #343a40;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .invoice-details .label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .invoice-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .invoice-table th, .invoice-table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .invoice-table th {
+        background-color: #6c8e23; /* Verde musgo */
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .invoice-table td {
+        background-color: #fff;
+    }
+
+    .invoice-footer {
+        padding-top: 15px;
+        text-align: right;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .btn-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px; /* Espacio entre los botones */
+        margin-top: 30px;
+    }
+
+    .btn-download, .btn-back {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-download {
+        background-color: #dc3545; /* Rojo */
+        color: #fff;
+        text-align: center;
+    }
+
+    .btn-download:hover {
+        background-color: #c82333; /* Rojo más oscuro */
+    }
+
+    .btn-back {
+        background-color: #007bff; /* Azul */
+        color: #fff;
+        text-align: center;
+    }
+
+    .btn-back:hover {
+        background-color: #0056b3; /* Azul más oscuro */
+    }
+
+</style>
+
+<div class="invoice-container" id="pdf-content">
+    <div class="invoice-header">
+        <h2>Detalles de la Planilla</h2>
+        <p class="date">Fecha: @DateTime.Now.ToString("dd/MM/yyyy")</p>
+    </div>
+
+    <div class="invoice-details">
+        <h4>@Model.FirstName @Model.LastName</h4>
+        <table class="invoice-table">
+            <thead>
+                <tr>
+                    <th>Concepto</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Salario Base</td>
+                    <td>@Model.BaseSalary.ToString("C")</td>
+                </tr>
+                <tr>
+                    <td>Deducción Salida Anticipada</td>
+                    <td>@Model.DeduccionSalidaAnticipada.ToString("C")</td>
+                </tr>
+                <tr>
+                    <td>Deducción Falta</td>
+                    <td>@Model.DeduccionFalta.ToString("C")</td>
+                </tr>
+                <tr>
+                    <td>Deducción Llegada Tarde</td>
+                    <td>@Model.DeduccionLlegadaTarde.ToString("C")</td>
+                </tr>
+                <tr>
+                    <td>Deducción Caja</td>
+                    <td>@Model.CajaDeduction.ToString("C")</td>
+                </tr>
+                <tr>
+                    <td><strong>Salario Final</strong></td>
+                    <td><strong>@Model.FinalSalary.ToString("C")</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="invoice-footer">
+        <!-- Espacio para información adicional si es necesario -->
+    </div>
+</div>
+
+<div class="btn-container">
+    <a href="@Url.Action("Index", "Cierre")" class="btn-back">Volver</a> <!-- Cambia la acción y el controlador según sea necesario -->
+    <button class="btn-download" id="download-pdf">Descargar PDF</button>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script>
+        document.getElementById('download-pdf').addEventListener('click', function () {
+            const element = document.getElementById('pdf-content');
+            if (element) {
+                // Obtener nombre completo y fecha para el nombre del archivo
+                const firstName = '@Model.FirstName';
+                const lastName = '@Model.LastName';
+                const todayDate = new Date().toLocaleDateString('en-GB').replace(/\//g, '-'); // dd-mm-yyyy
+
+                // Crear nombre de archivo
+                const filename = `Detalles_Planilla_${firstName}_${lastName}_${todayDate}.pdf`;
+
+                // Convertir el contenedor a PDF con html2pdf
+                html2pdf().from(element).set({
+                    margin: 10,
+                    filename: filename,
+                    jsPDF: {
+                        unit: 'mm',
+                        format: 'a4',
+                        orientation: 'portrait'
+                    }
+                }).save(); // Guardar el PDF directamente
+            } else {
+                alert('El elemento para convertir en PDF no se encontró.');
+            }
+        });
+    </script>
+}

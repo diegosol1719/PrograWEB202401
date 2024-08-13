@@ -1,0 +1,135 @@
+﻿@model Khareedo.Models.Products
+
+@{
+    ViewBag.Title = "Producto";
+    ViewBag.SubTitle = "Eliminar";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+}
+
+
+<div class="alert alert-danger">
+    <strong>Advertencia!</strong> ¿Está seguro de que desea eliminar este Producto?
+</div><div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Nombre
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            Proveedor
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SupplierID)
+        </dd>
+        <dt>
+            Categoría
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CategoryID)
+        </dd>
+        <dt>
+            Subcategoría
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SubCategoryID)
+        </dd>
+        <dt>
+            Cantidad por Unidad
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuantityPerUnit)
+        </dd>
+        <dt>
+            Precio Con Oferta
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UnitPrice)
+        </dd>
+        <dt>
+            Precio Sin Oferta
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OldPrice)
+        </dd>
+        <dt>
+            Peso 
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UnitWeight)
+        </dd>
+        <dt>
+            Descuento
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Discount)
+        </dd>
+        <dt>
+            Unidades Disponibles
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UnitInStock)
+        </dd>
+        <dt>
+            Unidades en Orden
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UnitOnOrder)
+        </dd>
+        <dt>
+            Producto Disponible
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductAvailable)
+        </dd>
+        <dt>
+            Imagen (URL)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ImageURL)
+        </dd>
+        
+        <dt>
+            Oferta Disponible
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AddBadge)
+        </dd>
+        <dt>
+            Título de la Oferta
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OfferTitle)
+        </dd>
+        <dt>
+            Color de la Oferta
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OfferBadgeClass)
+        </dd>
+        <dt>
+            Descripción Corta
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ShortDescription)
+        </dd>
+        <dt>
+            Descripción Larga
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LongDescription)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-danger" />
+            @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>

@@ -1,0 +1,135 @@
+﻿@model IPagedList<Khareedo.Models.Asistencia>
+@using PagedList.Mvc
+@using PagedList
+@{
+    ViewBag.Title = "Lista de Asistencias";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+    var userRole = TempData["UserRole"] != null ? (int)TempData["UserRole"] : 0;
+}
+
+<style>
+    .search-container {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        margin-bottom: 10px;
+    }
+
+        .search-container .input-group {
+            width: 300px; /* Ancho fijo para el input-group */
+        }
+
+        .search-container .search-input {
+            flex: 1; /* El input toma el espacio disponible */
+        }
+
+        .search-container .search-button {
+            margin-left: -1px; /* Ajuste mínimo para evitar superposición */
+        }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse; /* Colapsar bordes de la tabla */
+        table-layout: fixed; /* Fijar el ancho de la tabla */
+    }
+
+        .table th, .table td {
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #ddd; /* Borde delgada */
+        }
+
+        .table th {
+            background-color: #343a40; /* Fondo gris oscuro para el encabezado */
+            color: #fff; /* Texto blanco */
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Fondo gris claro para filas pares */
+        }
+
+        .table tbody tr:hover {
+            background-color: #e9f5fb; /* Fondo azul claro al pasar el ratón */
+        }
+
+    .pagination-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+
+@if (userRole == 1)
+{
+    <p>
+        <a href="@Url.Action("Create", "Asistencia")" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar</a>
+    </p>
+    <br>
+    <br>
+    <br>
+}
+
+<!-- Formulario de búsqueda -->
+@if (userRole == 1)
+{
+    <div class="search-container">
+        @using (Html.BeginForm("Index", "Asistencia", FormMethod.Get, new { @class = "form-inline" }))
+        {
+            <div class="input-group">
+                @Html.TextBox("searchString", ViewBag.SearchString as string, new { @class = "form-control", placeholder = "Buscar por nombre..." })
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </span>
+            </div>
+        }
+    </div>
+}
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Fecha)</th>
+                    <th>Motivo</th>
+                    <th>Hora de Entrada</th>
+                    <th>Hora de Salida</th>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    @if (userRole == 1)
+                    {
+                        <th>Acciones</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@item.Estado</td>
+                        <td>@(item.HoraEntrada.HasValue ? DateTime.Today.Add(item.HoraEntrada.Value).ToString("hh:mm tt") : "")</td>
+                        <td>@(item.HoraSalida.HasValue ? DateTime.Today.Add(item.HoraSalida.Value).ToString("hh:mm tt") : "")</td>
+                        <td>@item.UserID</td>
+                        <td>
+                            @(item.AdminUsers != null ? item.AdminUsers.FirstName + " " + item.AdminUsers.LastName : "Desconocido")
+                        </td>
+
+                        @if (userRole == 1)
+                        {
+                            <td>
+                                @Html.ActionLink("Eliminar", "Delete", new { id = item.AsistenciaID }, new { @class = "btn btn-danger btn-sm" })
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No hay asistencias registradas.</p>
+    }
+
+    <div class="pagination-container">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.SearchString }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+    </div>

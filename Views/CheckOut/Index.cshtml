@@ -1,0 +1,232 @@
+﻿@model IEnumerable<Khareedo.Models.OrderDetails>
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    #aa-catg-head-banner {
+        position: relative;
+        text-align: center; /* Centra horizontalmente el contenido */
+        background-color: transparent; /* Color de fondo transparente */
+        padding: 0; /* Elimina cualquier padding */
+        margin: 0; /* Elimina cualquier margen */
+        height: 35vh; /* Asegura que el contenedor ocupe toda la altura de la pantalla */
+    }
+
+        #aa-catg-head-banner img {
+            width: 100%; /* Ancho del 30% */
+            height: 100%; /* Altura del 100% para cubrir todo el contenedor verticalmente */
+            display: block; /* Asegura que la imagen ocupe todo el ancho disponible */
+            margin: 0 auto; /* Centra la imagen horizontalmente */
+            border-radius: 8px; /* Esquinas redondeadas */
+            object-fit: cover; /* Ajusta la imagen para llenar el contenedor sin distorsión */
+        }
+</style>
+<section id="aa-catg-head-banner">
+    <img src="~/local6.png" alt="fashion img">
+    <div class="aa-catg-head-banner-area">
+        <div class="container">
+            <div class="aa-catg-head-banner-content">
+                <h2>Pago</h2>
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">Inicio</a></li>
+                    <li class="active">Pago</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+@using (Html.BeginForm("PlaceOrder", "CheckOut", FormMethod.Post))
+{
+    <section id="checkout">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="container" style="margin-top: 20px;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-danger">
+                                        @TempData["ErrorMessage"]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="checkout-area">
+                        <form action="">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="checkout-left">
+                                        <div class="panel-group" id="accordion">
+                                            <div class="panel panel-default aa-checkout-coupon">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                            Cuenta con un código de descuento?
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne" class="panel-collapse collapse in">
+                                                    <div class="panel-body">
+                                                        <input type="text" placeholder="Código" class="aa-coupon-code">
+                                                        <input type="submit" value="Aplicar" class="aa-browse-btn">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default aa-checkout-billaddress">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                                            Detalles de factura / Dirección
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseThree" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="aa-checkout-single-bill">
+                                                                    <input name="FirstName" type="text" required placeholder="Primer Nombre*" value="@ViewBag.Customer.First_Name">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="aa-checkout-single-bill">
+                                                                    <input name="LastName" type="text" required placeholder="Segundo Nombre*" value="@ViewBag.Customer.Last_Name">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="aa-checkout-single-bill">
+                                                                    <input name="Email" type="email" required placeholder="Correo electrónico*" value="@ViewBag.Customer.Email">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="aa-checkout-single-bill">
+                                                                    <input name="Mobile" type="tel" required placeholder="Teléfono*" value="@ViewBag.Customer.Mobile1">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                @if (!string.IsNullOrEmpty(ViewBag.Customer.Address1))
+                                                                {
+                                                                    <div class="aa-checkout-single-bill">
+                                                                        <textarea name="Address" cols="8" required rows="3" placeholder="Dirección*">@ViewBag.Customer.Address1</textarea>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="aa-checkout-single-bill">
+                                                                        <textarea name="Address" cols="8" required rows="3" placeholder="Dirección*"></textarea>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="aa-checkout-single-bill">
+                                                                    <select name="Province" class="form-control">
+                                                                        <option value="@ViewBag.Customer.Country">@ViewBag.Customer.Country</option>
+                                                                        <option value="Heredia">Heredia</option>
+                                                                        <option value="San Jose">San Jose</option>
+                                                                        <option value="Cartago">Cartago</option>
+                                                                        <option value="Alajuela">Alajuela</option>
+                                                                        <option value="Limon">Limon</option>
+                                                                        <option value="Guanacaste">Guanacaste</option>
+                                                                        <option value="Puntarenas">Puntarenas</option>
+                                                                    </select>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="aa-checkout-single-bill">
+                                                                    <input name="City" type="text" placeholder="Ciudad">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="aa-checkout-single-bill">
+                                                                    <input name="PostCode" type="text" placeholder="Código postal">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="checkout-right">
+                                        <h4>Resumen de compra</h4>
+                                        <div class="aa-order-summary-area">
+                                            <table class="table table-responsive">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Producto</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (Session["username"] != null)
+                                                    {
+                                                        foreach (var item in Model)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.Products.Name <strong> x  @item.Quantity</strong></td>
+                                                                <td>@item.TotalAmount</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <text>Please login to Checkout</text>
+                                                    }
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Subtotal</th>
+                                                        <td>@ViewBag.SubTotal</td>
+                                                    </tr>
+                                                    <tr>
+                                                        @Html.Hidden("discount", null, new { @value = ViewBag.Discount })
+                                                        <th>Descuento</th>
+                                                        <td>@ViewBag.Discount</td>
+                                                    </tr>
+                                                    <tr>
+                                                        @Html.Hidden("totalAmount", null, new { @value = ViewBag.TotalAmount })
+                                                        <th>Total</th>
+                                                        <td>@ViewBag.TotalAmount</td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <h4>Método de pago</h4>
+                                        <div class="aa-payment-method">
+                                            <div class="aa-checkout-single-bill aa-checkout-billaddress">
+                                                <div class="form-group">
+                                                    <div class="col-md-10">
+                                                        @Html.DropDownList("PayMethod", null, htmlAttributes: new { @class = "form-control", @name = "PaymentMethod" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br /><br />
+                                            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark">
+                                            <input type="submit" value="Confirmar" class="aa-browse-btn">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

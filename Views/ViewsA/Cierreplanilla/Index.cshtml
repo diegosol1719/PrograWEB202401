@@ -1,0 +1,166 @@
+﻿@model IPagedList<Khareedo.Controllers.CierreController.CierrePlanillaViewModel>
+@using PagedList.Mvc
+@using PagedList
+
+@{
+    ViewBag.Title = "Planilla";
+    Layout = "~/Views/ViewsA/shared/_Layout.cshtml";
+    int userRole = (int)Session["RoleType"]; // Obtener el rol del usuario
+}
+
+<style>
+    .search-container {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        margin-bottom: 10px;
+    }
+
+        .search-container .input-group {
+            width: 300px; /* Ancho fijo para el input-group */
+        }
+
+        .search-container .search-input {
+            flex: 1; /* El input toma el espacio disponible */
+        }
+
+        .search-container .search-button {
+            margin-left: -1px; /* Ajuste mínimo para evitar superposición */
+        }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin: 10px;
+        padding: 15px;
+        width: 300px;
+        background-color: #fff;
+        text-align: left;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .card h4 {
+            margin-top: 0;
+            color: #343a40;
+        }
+
+        .card p {
+            margin: 5px 0;
+        }
+
+        .card .label {
+            font-weight: bold;
+            color: #333;
+        }
+
+    .pagination-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .table-container {
+        margin-top: 20px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f4f4f4;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+        }
+  
+</style>
+
+
+@if (userRole == 1)
+{
+    <div class="search-container">
+
+        @using (Html.BeginForm("Index", "Cierre", FormMethod.Get))
+        {
+            <input type="text" name="searchString" value="@ViewBag.SearchString" placeholder="Buscar por nombre..." style="padding: 5px; width: 200px;" />
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        }
+    </div>
+    <div class="card-container">
+
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <h4>@item.FirstName @item.LastName</h4>
+                <p><span class="label">Salario Base:</span> @item.BaseSalary.ToString("C")</p>
+                <p><span class="label">Deducción Salida Anticipada:</span> @item.DeduccionSalidaAnticipada.ToString("C")</p>
+                <p><span class="label">Deducción Falta:</span> @item.DeduccionFalta.ToString("C")</p>
+                <p><span class="label">Deducción Llegada Tarde:</span> @item.DeduccionLlegadaTarde.ToString("C")</p>
+                <p><span class="label">Deducción CCSS:</span> @item.CajaDeduction.ToString("C")</p>
+                <p><span class="label">Salario Final:</span> @item.FinalSalary.ToString("C")</p>
+                <a class="btn btn-primary" href="@Url.Action("Details", "Cierre", new { id = item.UserID })">Ver Detalles</a>
+            </div>
+        }
+    </div>
+    <div class="pagination-container">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.SearchString }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+    </div>
+}
+
+else if (userRole == 0)
+{
+    <div class="table-container" style="display: flex; justify-content: center; margin-top: 20px;">
+        <tbody>
+            <tr>
+                <td style="padding: 0; border: none;">
+                    <div class="card-container" style="display: flex; flex-wrap: wrap; justify-content: center;">
+                        @foreach (var item in Model)
+                        {
+                            <div class="card">
+                                <h4>@item.FirstName @item.LastName</h4>
+                                <p><span class="label">Salario Base:</span> @item.BaseSalary.ToString("C")</p>
+                                <p><span class="label">Deducción Salida Anticipada:</span> @item.DeduccionSalidaAnticipada.ToString("C")</p>
+                                <p><span class="label">Deducción Falta:</span> @item.DeduccionFalta.ToString("C")</p>
+                                <p><span class="label">Deducción Llegada Tarde:</span> @item.DeduccionLlegadaTarde.ToString("C")</p>
+                                <p><span class="label">Deducción CCSS:</span> @item.CajaDeduction.ToString("C")</p>
+                                <p><span class="label">Salario Final:</span> @item.FinalSalary.ToString("C")</p>
+                                <a class="btn btn-primary" href="@Url.Action("Details", "Cierre", new { id = item.UserID })">Ver Detalles</a>
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </div>
+}
+
+
+
